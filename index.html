@@ -147,7 +147,7 @@ footer.note { margin-top: var(--ac-s6); text-align: center; }
     var head = document.createElement('div');
     head.className = 'ac-lb__head';
     head.innerHTML = '<span>#</span><span>Top ' + Arcade.options.topN +
-      '</span><span>' + game.scoreLabel + '</span>';
+      '</span><span>' + Arcade.primaryMetric(game).label + '</span>';
     board.appendChild(head);
 
     var list = document.createElement('div');
