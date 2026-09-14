@@ -91,6 +91,7 @@ footer.note { margin-top: var(--ac-s6); text-align: center; }
 <script src="shared/js/arcade-scores.js"></script>
 <script src="shared/js/arcade-catalogue.js"></script>
 <script src="shared/js/arcade-progress.js"></script>
+<script src="shared/js/arcade-dealer.js"></script>
 <script src="shared/js/arcade-ui.js"></script>
 <script src="shared/js/arcade-broker.js"></script>
 <script src="shared/js/arcade.js"></script>
@@ -214,6 +215,17 @@ footer.note { margin-top: var(--ac-s6); text-align: center; }
   }
   Arcade.auth.onChange(setNote);
   setNote();
+
+  // He greets once the session is known, so he can tell a regular from a
+  // stranger rather than guessing while the broker is still connecting.
+  Arcade.auth.ready().then(function () {
+    if (!Arcade.dealer) return;
+    var seen = false;
+    try { seen = localStorage.getItem('arcade.seen') === '1'; localStorage.setItem('arcade.seen', '1'); }
+    catch (e) { seen = true; }
+    Arcade.dealer.says(!seen ? 'hub_first'
+      : Arcade.auth.isSignedIn() ? 'hub' : 'hub_signed_out');
+  });
 })();
 </script>
 </body>
