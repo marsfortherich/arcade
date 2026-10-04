@@ -101,6 +101,24 @@ footer.note { margin-top: var(--ac-s6); text-align: center; }
   color: var(--ac-ink-dim);
 }
 @media (prefers-reduced-motion: reduce) { .community a:hover { transform: none; } }
+
+/* A demo build says so up front, and where the rest of the game is. Hidden
+   unless Arcade.isDemo(); [hidden] has to win over the flex below. */
+.demo-strip {
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
+  gap: var(--ac-s3);
+  max-width: 720px;
+  margin: var(--ac-s4) auto 0;
+  padding: 10px 16px;
+  border: 1px solid var(--ac-gold);
+  border-radius: var(--ac-r-md);
+  background: var(--ac-surface-1);
+  color: var(--ac-ink-dim);
+  font-size: var(--ac-fs-sm);
+  line-height: 1.5;
+}
+.demo-strip[hidden] { display: none; }
+.demo-strip a { text-decoration: none; }
 </style>
 </head>
 <body class="ac-root">
@@ -114,6 +132,13 @@ footer.note { margin-top: var(--ac-s6); text-align: center; }
       share one design language, one sign-in and one set of leaderboards. Beat your
       best in any of them and it shows up here.
     </p>
+    <div class="demo-strip" id="demo-strip" hidden>
+      <span class="ac-fullgame">Demo</span>
+      <span>Every game plays to its win on the first difficulty. The other decks, wheels
+        and difficulties, and endless play, are in the full game.</span>
+      <a class="ac-btn ac-btn--sm ac-btn--primary" id="demo-store" target="_blank"
+         rel="noopener noreferrer">Full game on Steam</a>
+    </div>
   </header>
 
   <main class="games" id="games"></main>
@@ -231,6 +256,11 @@ footer.note { margin-top: var(--ac-s6); text-align: center; }
       you.querySelector('.ac-lb__name').textContent = data.you.name + ' (you)';
       board.appendChild(you);
     }
+  }
+
+  if (Arcade.isDemo()) {
+    document.getElementById('demo-store').href = Arcade.demo.storeUrl;
+    document.getElementById('demo-strip').hidden = false;
   }
 
   var boards = Arcade.games.map(function (g) { return { game: g, node: card(g) }; });
